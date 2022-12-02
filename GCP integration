@@ -1,0 +1,28 @@
+# Import necessary libraries
+import io
+import os
+
+from google.cloud import vision
+from google.cloud.vision import types
+
+# Set your GCP credentials
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/path/to/your/credentials.json"
+
+# Create a Vision client
+client = vision.ImageAnnotatorClient()
+
+# Read the user-generated image file
+with io.open("path/to/user/image.jpg", "rb") as image_file:
+    content = image_file.read()
+
+# Create a Image object
+image = types.Image(content=content)
+
+# Use the client to detect and analyze the image
+response = client.object_localization(image=image)
+objects = response.localized_object_annotations
+
+# Print the material composition of the object in the image
+print("The object in the image is made of:")
+for obj in objects:
+    print(obj.name)
