@@ -1,28 +1,28 @@
-//PyGlass (MPGC - Metal, Plastic, Glass, Cardboard):
+# PyGlass (MPGC - Metal, Plastic, Glass, Cardboard):
 
-//1. Import necessary libraries:
+# 1. Import necessary libraries:
 
 import cv2
 import numpy as np
 
-//2. Read the image file:
+# 2. Read the image file:
 
 img = cv2.imread('metal_plastic.jpg')
 
-//3. Convert the image to grayscale:
+# 3. Convert the image to grayscale:
 
 gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
 
-//4. Apply thresholding to the image:
+# 4. Apply thresholding to the image:
 
 ret, thresh = cv2.threshold(gray,127,255,cv2.THRESH_BINARY_INV)
 
-//5. Perform erosion and dilation on the image:
+# 5. Perform erosion and dilation on the image:
 
 kernel = np.ones((5,5),np.uint8)
 erosion = cv2.erode(thresh,kernel,iterations = 1)
 dilation = cv2.dilate(erosion,kernel,iterations = 1)
 
-//6. Detect the contours in the image:
+# 6. Detect the contours in the image:
 
 contours, hierarchy = cv2.findContours(dilation,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_NONE)
