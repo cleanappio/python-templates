@@ -1,0 +1,15 @@
+# Import necessary libraries and modules
+import cv2
+import tensorflow as tf
+
+# Prompt the user for the path to the photo
+photo_path = input("Enter the path to the photo: ")
+
+# Read the user-generated photo from the specified path
+photo = cv2.imread(photo_path)
+
+# Use TensorFlow to perform image recognition on the photo
+objects = tf.image_recognition(photo)
+
+# Print the objects detected in the photo
+print("Objects detected in the photo:", objects)
