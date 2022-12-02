@@ -1,0 +1,39 @@
+# Import the necessary libraries
+from google.cloud import vision
+from google.cloud.vision import types
+
+# Create a client for the Vision API
+client = vision.ImageAnnotatorClient()
+
+# Read the image file
+with open('image.jpg', 'rb') as image_file:
+    content = image_file.read()
+
+# Create a Image object from the image content
+image = types.Image(content=content)
+
+# Use the client to detect the text in the image
+response = client.text_detection(image=image)
+
+# Get the full text from the response
+full_text = response.text_annotations[0].description
+
+# Use the Natural Language API to analyze the sentiment of the text
+from google.cloud import language
+from google.cloud.language import enums
+from google.cloud.language import types
+
+# Create a client for the Natural Language API
+client = language.LanguageServiceClient()
+
+# Create a Document object from the full text
+document = types.Document(content=full_text, type=enums.Document.Type.PLAIN_TEXT)
+
+# Use the client to analyze the sentiment of the document
+response = client.analyze_sentiment(document=document)
+
+# Get the overall sentiment score from the response
+sentiment = response.document_sentiment.score
+
+# Print the sentiment score
+print(sentiment)
