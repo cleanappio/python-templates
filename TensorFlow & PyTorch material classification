@@ -1,0 +1,25 @@
+# Import the necessary libraries:
+import tensorflow as tf
+import torch
+
+# Load the user-generated image into a variable:
+image = load_image_from_cleanapp()
+
+# Use TensorFlow to classify the material of the object in the image:
+with tf.Session() as sess:
+  # Load the pre-trained TensorFlow model:
+  model = tf.saved_model.load("material_classification_model.pb")
+
+  # Run the model on the image to get the material classification:
+  material_classification = model.predict(image)
+
+# Use PyTorch to classify the material of the object in the image:
+with torch.no_grad():
+  # Load the pre-trained PyTorch model:
+  model = torch.load("material_classification_model.pt")
+
+  # Run the model on the image to get the material classification:
+  material_classification = model(image)
+
+# Return the material classification to CleanApp:
+return material_classification
