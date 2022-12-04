@@ -1,30 +1,38 @@
-//! This module provides a function for classifying the material of an object in an image using TensorFlow and PyTorch.
-//!
-//! # Example
-//!
-//! ```
-//! use tensorflow::{Tensor, Graph, Session};
-//! use torch::{Tensor, nn};
-//!
-//! // Load the user-generated image into a variable:
-//! let image = load_image_from_cleanapp();
-//!
-//! // Use TensorFlow to classify the material of the object in the image:
-//! let mut tf_session = Session::new(&Graph::new())?;
-//! let tf_model = TensorFlowModel::from_saved_model("material_classification_model.pb")?;
-//! let tf_material_classification = tf_model.predict(&mut tf_session, image)?;
-//!
-//! // Use PyTorch to classify the material of the object in the image:
-//! let mut pt_model = torch::load("material_classification_model.pt")?;
-//! pt_model.eval();
-//! let pt_material_classification = pt_model(image)?;
-//!
-//! // Return the material classification to CleanApp:
-//! Ok(MaterialClassification {
-//!     tf_classification: tf_material_classification,
-//!     pt_classification: pt_material_classification,
-//! })
-//! ```
+def classify_material(image: Tensor) -> MaterialClassification:
+
+    '''
+    This function classifies the material of an object in the given image using TensorFlow and PyTorch.
+
+    # Example
+
+    ```python
+    import tensorflow as tf
+    import torch
+
+    # Load the user-generated image into a variable:
+    image = load_image_from_cleanapp()
+
+    # Use TensorFlow to classify the material of the object in the image:
+    tf_session = tf.Session(graph=tf.Graph())
+    tf_model = TensorFlowModel.from_saved_model("material_classification_model.pb")
+    tf_material_classification = tf_model.predict(tf_session, image)
+
+    # Use PyTorch to classify the material of the object in the image:
+    pt_model = torch.load("material_classification_model.pt")
+    pt_model.eval()
+    pt_material_classification = pt_model(image)
+
+    # Return the material classification to CleanApp:
+    return MaterialClassification(
+        tf_classification=tf_material_classification,
+        pt_classification=pt_material_classification
+    )
+    ```
+
+    # Returns
+
+    A `MaterialClassification` object containing the material classification provided by TensorFlow and PyTorch.
+    '''
 
 # Import the necessary libraries:
 import tensorflow as tf
