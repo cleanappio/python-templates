@@ -43,6 +43,20 @@ def send_hazard_notification(voice_input: str) -> bool:
     else:
         return False
 
-def aggregate_hazard_reports(current_location: tuple, time_threshold: int) -> List[dict]:
+def aggregate_hazard_reports(radius: float, time_threshold: float) -> Tuple[int, List[HazardReport]]:
     """
-    Batch aggregates reports from multiple drivers, and declares a hazard hotspot if more than 100 reports within 30 minutes and r-radius (500m)
+    Collects all CleanApp reports that have been generated within the specified radius and time threshold.
+    The function counts the number of reports and returns this value, along with the list of collected reports.
+    
+    Args:
+        radius: The radius, in meters, within which to collect reports.
+        time_threshold: The time threshold, in minutes, within which to collect reports.
+        
+    Returns:
+        A tuple containing the number of collected reports, and the list of collected reports.
+    """
+  
+ # Use the driver's GPS coordinates to determine the region within which to collect reports:
+    gps_coordinates = get_gps_coordinates()
+    min_latitude = gps_coordinates.latitude - radius / 111111.0
+    max_lat
