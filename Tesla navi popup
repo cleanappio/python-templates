@@ -1,0 +1,46 @@
+"""
+This module provides a function for displaying a popup notification on the Tesla navigation display
+showing a hazard hotspot and heatmap based on other drivers' CleanApp reports in a given location.
+
+If more than 100 drivers generate a CleanApp report about a particular hazard, within 500m of that hazard,
+in the past 1 hour, the function will display the hazard popup and notify first responders.
+"""
+
+# Import necessary libraries
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+def display_hazard_notification(cleanapp_reports, current_location):
+  """
+  Displays a popup notification on the Tesla navigation display showing a hazard hotspot
+  and heatmap based on the given CleanApp reports and the current location.
+  
+  If there are more than 100 reports in the past 1 hour, the notification is displayed
+  and first responders are notified.
+  
+  Args:
+    cleanapp_reports: A list of CleanApp reports to be used to create the heatmap.
+    current_location: The current location of the Tesla, used to filter the CleanApp reports.
+  
+  Returns:
+    Nothing, but displays a popup notification on the Tesla navigation display if appropriate.
+  """
+  
+  # Filter the CleanApp reports to only include those within 500 meters of the current location
+  filtered_reports = cleanapp_reports.filter(report => 
+    is_within_500m(report.location, current_location)
+  )
+  
+  # Check if there are more than 100 reports in the past 1 hour
+  if (filtered_reports.length > 100) {
+    # Create a heatmap of the CleanApp reports
+    sns.kdeplot(filtered_reports.latitude, filtered_reports.longitude)
+    plt.show()
+    
+    # Display a popup notification with the heatmap
+    show_popup(
+      "Hazard Hotspot Alert!", 
+      "There have been multiple reports of a hazard in your area. Please exercise caution and be alert for potential hazards on the road. First responders have been notified."
+    )
+  }
+}
